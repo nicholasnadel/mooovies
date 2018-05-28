@@ -1,0 +1,74 @@
+@import "bootstrap";
+
+
+.movie-title li {
+  float: right;
+  display: block;
+}
+
+h1.movie-title {
+  float: right;
+  top: 0;
+}
+
+img.movie-container {
+  display: inline-block;
+  float: left;
+}
+
+.release-date {
+  float: right;
+  display: block;
+}
+
+.flex-container {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  align-items: center;
+
+  flex-wrap: wrap;
+  width: 100%x;
+}
+
+.flex-item {
+  display: flex;
+  align-items: top;
+  height: auto;
+  width: 100%;
+  background-color: green;
+  border: 1px solid #626262;
+  margin: 3px;
+  padding: 10px 0 0 10px;
+}
+
+.flex-item img {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+span {
+  padding-left: 5px;
+}
+
+.info-container {
+  display: inline-block;
+  vertical-align: top;
+  padding: 0 0 0 5px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  background-color: red;
+  width: 100%;
+}
+
+.info-container p {
+  padding: 0;
+  margin: 0 0 10px;
+}
+
+.gray {
+  background-color: #EEEEEE;
+}

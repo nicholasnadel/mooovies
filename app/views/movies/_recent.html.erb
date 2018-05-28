@@ -1,0 +1,25 @@
+<h3>Recent Reviews</h3>
+
+<div class="div-table">
+  <% @reviews = Review.last(5).reverse %>
+  <% @reviews.each do |review| %>
+    <div class="div-table-row">
+      <div class="div-table-cell">
+        <em><%= "\". . . #{review.content.split(' ').last(25).join(' ')}\"" %></em>
+      </div>
+      <div class="div-table-cell">
+        <div class="c-rating" id="rating-recent-<%= review.review_id %>"></div>
+        <script type="text/javascript">
+          var html = $("#rating-<%= review.review_id %>")[0].innerHTML;
+          $("#rating-recent-<%= review.review_id %>").append(html);
+        </script>
+        <div class="div-table-cell">
+          <strong>
+            <%= " - #{Movie.find_by(movie_id: review.movie_id).title}" %>
+          </strong>
+        </div>
+      </div>
+    </div>
+
+  <% end %>
+</div>

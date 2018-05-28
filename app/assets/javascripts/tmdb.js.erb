@@ -1,0 +1,146 @@
+(function() {
+  window.tmdb = {
+    "api_key": '<%= Rails.application.secrets.tmdb_key %>',
+    "base_uri": "http://api.themoviedb.org/3",
+    "images_uri": "https://api.themoviedb.org/3",
+    call: function(url, params, success, error){
+      var params_str ="api_key="+tmdb.api_key;
+      for (var key in params) {
+        if (params.hasOwnProperty(key)) {
+          params_str+="&"+key+"="+encodeURIComponent(params[key]);
+        }
+      }
+      var tmdb_url = tmdb.base_uri + url + "?" + params_str;
+      $.ajax({
+        method: 'GET',
+        cache: false,
+        url: tmdb_url,
+        success: function(data){
+          if (typeof success == "function") {
+            success(data);
+          }else{
+            console.log('No success callback, but the request gave results');
+          }
+        },
+        error: function(data){
+          if (typeof error == "function") {
+            console.log(this);
+            error(data);
+          }else{
+            console.console.log();('No error callback');
+          }
+        }
+      });
+    }
+  }
+})();
+
+(function(){
+  window.error = {
+    log: function(data){
+      console.log(JSON.stringify(data));
+    }
+  }
+})();
+
+(function(){
+  window.genres = {
+    save: function(data){
+      var items = data.genres;
+      var id, name, params;
+      Object.keys(items).forEach(function(k){
+        id = items[k].id;
+        name = items[k].name;
+        params = { "genre_id": id, "name": name };
+        $.ajax({
+          method: 'POST',
+          url: '/genres',
+          data: params,
+          async: false,
+          success: function(msg){
+            console.log(msg);
+            console.log(params);
+          }
+        });
+      });
+      $(location).attr('href', '/movies');
+    }
+  }
+})();
+
+(function(){
+  window.reviews = {
+    save: function(data){
+      var items = data.results;
+      var movie_id = data.id;
+      var id, author, email, content, url, params;
+      Object.keys(items).forEach(function(k){
+        id = items[k].id;
+        author = items[k].author;
+        email = items[k].author + "@tmdb.com";
+        content = items[k].content;
+        url = items[k].url;
+        params = { review: { "review_id": id, "author": author, "email": email, "content": content, "url": url, "movie_id": movie_id } };
+        $.ajax({
+          method: 'POST',
+          url: '/reviews',
+          data: params,
+          async: false,
+          success: function(msg){
+            console.log(msg);
+            console.log(params);
+          }
+        });
+      });
+    }
+  }
+})();
+
+(function(){
+  window.movie = {
+    save: function(data){
+      var id = data.id;
+      var overview = data.overview;
+      var vote_average = data.vote_average;
+      var backdrop_path = data.backdrop_path;
+      var params = { movie: { "movie_id": id, "overview": overview, "vote_average": vote_average, "backdrop_path": backdrop_path } };
+      $.ajax({
+        method: 'PUT',
+        url: '/movie/' + id,
+        data: params,
+        async: false,
+        success: function(msg){
+          console.log(msg);
+          console.log(params);
+        }
+      });
+    }
+  }
+})();
+
+(function(){
+  window.results = {
+    save: function(data){
+      var items = data.results;
+      var id, title, releaseDate, genreIds, params;
+      Object.keys(items).slice(0, 7).forEach(function(k){
+        id = items[k].id;
+        title = items[k].title;
+        releaseDate = items[k].release_date;
+        genreIds = items[k].genre_ids;
+        params = { "movie_id": id, "title": title, "release_date": releaseDate, "genre_id": genreIds };
+        $.ajax({
+          method: 'POST',
+          url: '/home',
+          data: params,
+          async: false,
+          success: function(msg){
+            console.log(msg);
+            console.log(params);
+          }
+        });
+      });
+      tmdb.call('/genre/movie/list', {'language':'en-US'}, genres.save, error.log);
+    }
+  }
+})();
