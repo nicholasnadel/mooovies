@@ -5,36 +5,24 @@
   <button>Genre</button>
 </p>
 <script type="text/javascript" charset="utf-8">
-var api_key = '<%= Rails.application.secrets.tmdb_key %>' ;
-
-$(document).ready(function() {
-  $.ajax({
-    url: 'http://api.themoviedb.org/3/search/movie?api_key=' + api_key + '&query=happy',
-    popularity: 'http://api.themoviedb.org/3/search/movie&api_key=' + api_key + '/discover/movie?sort_by=popularity.desc',
-    genre: 'http://api.themoviedb.org/3/genre/list' + api_key + +'&language=en',
-    dataType: 'jsonp',
-    jsonpCallback: 'testing',
-    base_image_url: 'http://image.tmdb.org/t/p/w500'
-  }).error(function() {
-    console.log('error')
-  }).done(function(response) {
-    for (var i = 0; i < response.results.length; i++) {
-
-
-      $('#search_results').append('<div class="flex-container">' + '<div class="flex-item">' + '<img src=' + 'http://image.tmdb.org/t/p/w300' + response.results[i].poster_path + '>' + '<div class="info-container">' + '<h3>' + '<a href="#">' + response.results[i].title + '</a>' + '</h3>' + '<li>' + 'Release Date: ' + response.results[i].release_date + '</li>' + '<li>' + response.results[i].genre + '</li>' + '</div>' + '</div>' + '</div>');
-      // $('#search_results').append('<p>' + '<a href="#">' + response.results[i].title + '</a>' + '</p>');
-      // $('#search_results').append('<li>' + response.results[i].release_date + '</li>' );
-      // $('#search_results').append('<li>' + response.results[i].genre + '</li>');
-      // $('#search_results').append('</div>' + '</div>');
-
-
-
-
-
-    }
+  var api_key = '<%= Rails.application.secrets.tmdb_key %>' ;
+  
+  $(document).ready(function() {
+    $.ajax({
+      url: 'http://api.themoviedb.org/3/search/movie?api_key=' + api_key + '&query=happy',
+      popularity: 'http://api.themoviedb.org/3/search/movie&api_key=' + api_key + '/discover/movie?sort_by=popularity.desc',
+      genre: 'http://api.themoviedb.org/3/genre/list' + api_key + +'&language=en',
+      dataType: 'jsonp',
+      jsonpCallback: 'testing',
+      base_image_url: 'http://image.tmdb.org/t/p/w154'
+    }).error(function() {
+      console.log('error')
+    }).done(function(response) {
+      for (var i = 0; i < response.results.length; i++) {
+        $('#search_results').append('<div class="flex-container">' + '<div class="flex-item">' + '<img src=' + 'http://image.tmdb.org/t/p/w154' + response.results[i].poster_path + '>' + '<div class="info-container">' + '<h3>' + '<a href="#">' + response.results[i].title + '</a>' + '</h3>' + '<li>' + 'Release Date: ' + response.results[i].release_date + '</li>' + '<li>' + response.results[i].genre + '</li>' + '</div>' + '</div>' + '</div>');
+      }
+    });
   });
-});
-
 </script>
 <div class="row">
   <div class="col-md-7">

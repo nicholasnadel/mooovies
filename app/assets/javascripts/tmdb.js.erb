@@ -2,7 +2,7 @@
   window.tmdb = {
     "api_key": '<%= Rails.application.secrets.tmdb_key %>',
     "base_uri": "http://api.themoviedb.org/3",
-    "images_uri": "https://api.themoviedb.org/3",
+    "images_uri": "http://image.tmdb.org/t/p/w154",
     call: function(url, params, success, error){
       var params_str ="api_key="+tmdb.api_key;
       for (var key in params) {

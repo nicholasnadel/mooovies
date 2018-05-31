@@ -1,2 +1,51 @@
-<h1>Movies#show</h1>
-<p>Find me in app/views/movies/show.html.erb</p>
+<p id="notice"><%= notice %></p>
+
+<h1>Movie Revioobs!</h1>
+
+<%= render 'shared/navbar' %>
+
+<script type="text/javascript">
+  tmdb.call("/movie/<%= @movie.movie_id %>/reviews", {'language':'en-US'}, reviews.save, error.log);
+  tmdb.call("/movie/<%= @movie.movie_id %>", {'language':'en-US'}, movie.save, error.log);
+</script>
+<div class="movieitem">
+  <div class="image-place-<%= @movie.image_path %>"></div>
+  <div class="movietitle">
+    <div><h4><%= @movie.title %></h4></div>
+    <div><strong>Release date</strong>: <%= @movie.release_date.to_time.strftime('%B %d, %Y') %></div>
+    <% if @movie.genre_id.length > 1 %>
+    <div><strong>Genres</strong>:
+      <% @garray = Array.new %>
+      <% @movie.genre_id.each do |g| %>
+      <% gname = Genre.where(genre_id: g).pluck(:name)[0] %>
+      <% @garray.push(gname).reject! { |e| e.nil? } %>
+      <% end %>
+      <%= "#{@garray.join(', ')}" %>
+    </div>
+    <% else %>
+    <div><strong>Genre</strong>: <%= Genre.where(genre_id: @movie.genre_id).pluck(:name)[0] %></div>
+    <% end %>
+    <div class="reviews">
+      <% reviews = Review.where(movie_id: @movie.movie_id) %>
+      <% if reviews.size > 0 %>
+        <% reviews.each do |review| %>
+          <%= "\"#{review.content}\"" %>
+          <%= " - #{review.author}" %><%= " (#{review.email})" %>
+          <p></p>
+          <strong>Rating</strong>: <%= review.rating.present? ? review.rating : '0' %>
+          <div class="c-rating" id="rating-<%= review.review_id %>"></div>
+          <%= render 'rating', :review_id => review.review_id, :currentRating => review.rating %>
+          <hr>
+        <% end %>
+      <% else %>
+        There are no reviews to display.
+      <% end %>
+    </div>
+    <div>
+      <%= link_to 'Add a review', new_review_path(movie_id: @movie.movie_id, title: @movie.title), :class => "btn btn-primary" %>
+    </div>
+  </div>
+</div>
+<div class="reviews">
+  <%= link_to 'Back', :back %>
+</div>

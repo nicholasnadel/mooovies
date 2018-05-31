@@ -32,7 +32,6 @@ class MoviesController < ApplicationController
     params[:sort] ||= 'default'
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
   def movie_params
     params.require(:movie).permit(:title,
                                   :release_date,
